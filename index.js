@@ -11,11 +11,10 @@ app.use(express.json());
 // dollsManager
 // guN0fmksjtHHgkz5
 
-
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
- /*  "mongodb+srv://dollsManager:guN0fmksjtHHgkz5@cluster0.dyntprt.mongodb.net/?retryWrites=true&w=majority"; */
-// const uri =
+  /*  "mongodb+srv://dollsManager:guN0fmksjtHHgkz5@cluster0.dyntprt.mongodb.net/?retryWrites=true&w=majority"; */
+  // const uri =
   `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@cluster0.dyntprt.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -32,53 +31,54 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const toysCollection = client.db("toysDB").collection('toys')
+    const toysCollection = client.db("toysDB").collection("toys");
 
-
-
-    app.get('/all-toys', async (req, res) => {
+    app.get("/all-toys", async (req, res) => {
       const allToys = toysCollection.find();
       const result = await allToys.toArray();
-      res.send(result)
-    })
+      res.send(result);
+    });
 
-   app.get("/all-toys/:id", async (req, res) => {
-     const id = req.params.id;
+    app.get("/all-toys/:id", async (req, res) => {
+      const id = req.params.id;
 
-     const filter = { _id: new ObjectId(id) };
+      const filter = { _id: new ObjectId(id) };
 
-     const data = await toysCollection.findOne(filter);
+      const data = await toysCollection.findOne(filter);
 
-     res.send(data);
-   });
+      res.send(data);
+    });
 
-
-    app.get("/all-toys/:text", async(req,res)=> {
+    app.get("/all-toys/:text", async (req, res) => {
       if (
         req.params.text == "babyDolls" ||
         req.params.text == "barbie" ||
         req.params.text == "americanGirl"
       ) {
         const result = await toysCollection
-          .find({category:req.params.text})
+          .find({ category: req.params.text })
           .toArray();
         return res.send(result);
       }
       const result = await toysCollection.find({}).toArray();
+      res.send(result);
+    });
+
+    app.get("/my-toys/:email", async (req, res) => {
+      const result = await toysCollection.find({
+        sellerEmail:req.params.email
+      }).toArray();
       res.send(result)
     })
-    
+
+
 
     app.post("/upload-toy", async (req, res) => {
-      
       const data = req.body;
-      console.log(data)
+      console.log(data);
       const result = await toysCollection.insertOne(data);
-      res.send(result)
-    })
-
-
-
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -91,9 +91,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-
-
 
 app.get("/", (req, res) => {
   res.send("dreamy server is running ....");
