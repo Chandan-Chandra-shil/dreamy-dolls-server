@@ -48,7 +48,7 @@ async function run() {
       res.send(data);
     });
 
-    /* app.get("/all-toys/:text", async (req, res) => {
+   /*  app.get("/all-toys/:text", async (req, res) => {
       if (
         req.params.text == "babyDolls" ||
         req.params.text == "barbie" ||
@@ -88,24 +88,18 @@ async function run() {
     })
 
 
-  /*   app.put("/update-toy/:id", async (req, res) => {
+    app.patch("/update-toy/:id", async (req, res) => {
       const id = req.params.id;
       const updateToyData = req.body;
       const filter = {_id: new ObjectId(id) }
       const updateToy = {
         $set: {
-          photo:updateToyData.photo,
-          name:updateToyData.name,
-          category: updateToyData.category,
-          price: updateToyData.price,
-          rating: updateToyData.rating,
-          quantity: updateToyData.quantity,
-          description:updateToyData
+        ...updateToyData
         },
       };
       const result = await toysCollection.updateOne(filter, updateToy);
       res.send(result)
-    }) */
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
