@@ -8,8 +8,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// dollsManager
-// guN0fmksjtHHgkz5
+
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
@@ -87,6 +86,26 @@ async function run() {
       const result = await toysCollection.deleteOne(filter)
       res.send(result)
     })
+
+
+  /*   app.put("/update-toy/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateToyData = req.body;
+      const filter = {_id: new ObjectId(id) }
+      const updateToy = {
+        $set: {
+          photo:updateToyData.photo,
+          name:updateToyData.name,
+          category: updateToyData.category,
+          price: updateToyData.price,
+          rating: updateToyData.rating,
+          quantity: updateToyData.quantity,
+          description:updateToyData
+        },
+      };
+      const result = await toysCollection.updateOne(filter, updateToy);
+      res.send(result)
+    }) */
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
