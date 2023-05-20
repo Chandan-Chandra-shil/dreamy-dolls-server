@@ -42,27 +42,27 @@ async function run() {
     app.get("/all-toys/:id", async (req, res) => {
       const id = req.params.id;
 
-      const filter = { _id: new ObjectId(id) };
+      const filter = {_id: new ObjectId(id) };
 
       const data = await toysCollection.findOne(filter);
 
       res.send(data);
     });
 
-    app.get("/all-toys/:text", async (req, res) => {
+    /* app.get("/all-toys/:text", async (req, res) => {
       if (
         req.params.text == "babyDolls" ||
         req.params.text == "barbie" ||
         req.params.text == "americanGirl"
       ) {
         const result = await toysCollection
-          .find({ category: req.params.text })
+          .filter({category: req.params.text })
           .toArray();
         return res.send(result);
       }
       const result = await toysCollection.find({}).toArray();
       res.send(result);
-    });
+    }); */
 
     app.get("/my-toys/:email", async (req, res) => {
       const result = await toysCollection.find({
@@ -79,6 +79,14 @@ async function run() {
       const result = await toysCollection.insertOne(data);
       res.send(result);
     });
+
+
+    app.delete('/all-toys/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id) }
+      const result = await toysCollection.deleteOne(filter)
+      res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
